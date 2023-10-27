@@ -9,108 +9,156 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Responsive Cards'),
-        ),
-        body: const Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Card1(),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double cardHeight = constraints.maxHeight / 4;
+        double cardWidth = constraints.maxWidth;
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+            backgroundColor: const Color.fromARGB(255, 141, 152, 141),
+            appBar: AppBar(
+              centerTitle: true,
+              backgroundColor: const Color.fromARGB(255, 102, 84, 94),
+              title: const Text('Cards..'),
             ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Card2(),
-            )
-          ],
-        ),
-      ),
+            body: Column(
+              children: [
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Card1(
+                      cardHeight: cardHeight,
+                      cardWidth: cardWidth,
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Card2(
+                      cardHeight: cardHeight,
+                      cardWidth: cardWidth,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
 
 class Card1 extends StatelessWidget {
-  const Card1({super.key});
+  final double cardHeight;
+  final double cardWidth;
+  const Card1({required this.cardHeight, super.key, required this.cardWidth});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
-      ),
-      elevation: 10,
-      color: Colors.red,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 100.0,
-              color: Colors.grey,
-            ),
+    print("1st Card Height - $cardHeight");
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(5)),
+      child: Container(
+        height: cardHeight,
+        width: cardWidth,
+        color: const Color.fromARGB(255, 202, 127, 104),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    height: cardHeight / 3,
+                    width: cardWidth / 3,
+                    color: const Color.fromARGB(255, 201, 255, 199),
+                    child: const Center(
+                      child: Text("Title"),
+                    ),
+                  ),
+                ),
+              ),
+              //SizedBox(height: cardHeight / 5),
+              ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                child: Container(
+                  height: cardHeight / 3,
+                  color: const Color.fromARGB(255, 255, 245, 212),
+                  child: const Center(
+                    child: Text("Description"),
+                  ),
+                ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              color: Colors.green,
-              height: 100.0,
-              child: const Center(),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
 class Card2 extends StatelessWidget {
-  const Card2({super.key});
+  final double cardHeight;
+  final double cardWidth;
+  const Card2({required this.cardHeight, super.key, required this.cardWidth});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Card(
-          color: Colors.red,
-          margin: const EdgeInsets.only(top: 30),
-          child: SizedBox(
-            height: 200.0,
-            width: double.infinity,
+    print("2nd Height - $cardHeight");
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(5)),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            height: cardHeight,
+            width: cardWidth,
+            color: const Color.fromARGB(255, 202, 127, 104),
+            margin: const EdgeInsets.only(top: 30),
             child: Padding(
-              padding: const EdgeInsets.only(top: 45.0),
+              padding: const EdgeInsets.all(10),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                children: [
+                  SizedBox(height: cardHeight / 4),
+                  ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                     child: Container(
-                      color: Colors.green,
-                      height: 100,
-                      child: const Center(),
+                      color: const Color.fromARGB(255, 255, 245, 212),
+                      height: cardHeight / 3,
+                      child: const Center(
+                        child: Text("Description"),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
-        ),
-        Positioned(
-          top: .0,
-          left: .0,
-          right: .0,
-          child: Center(
-            child: Container(
-              color: Colors.amber,
-              width: 200,
-              height: 50,
-              child: const Center(child: Text("Title")),
+          Positioned(
+            top: 0.0,
+            left: 0.0,
+            right: 0.0,
+            child: Center(
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                child: Container(
+                  color: const Color.fromARGB(255, 201, 255, 199),
+                  width: 200,
+                  height: cardHeight / 3,
+                  child: const Center(
+                    child: Text("Title"),
+                  ),
+                ),
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }
